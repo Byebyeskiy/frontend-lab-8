@@ -1,0 +1,7 @@
+[
+ {"id":1,"name":"Breaking Bad","genres":["Drama","Crime"],"rating":{"average":9.3},"premiered":"2008-01-20","status":"Ended","image":null,"summary":"A chemistry teacher changes his life."},
+ {"id":2,"name":"Dark","genres":["Drama","Science-Fiction","Thriller"],"rating":{"average":8.8},"premiered":"2017-12-01","status":"Ended","image":null,"summary":"Mysteries across generations."},
+ {"id":3,"name":"The Office","genres":["Comedy"],"rating":{"average":8.5},"premiered":"2005-03-24","status":"Ended","image":null,"summary":"Office everyday life."},
+ {"id":4,"name":"Sherlock","genres":["Drama","Crime","Mystery"],"rating":{"average":9.0},"premiered":"2010-07-25","status":"Ended","image":null,"summary":"A modern detective."},
+ {"id":5,"name":"Unknown Show","genres":[],"rating":{"average":null},"premiered":null,"status":null,"image":null,"summary":null}
+]
