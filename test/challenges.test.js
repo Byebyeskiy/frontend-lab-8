@@ -1,0 +1,14 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { normalizeShow } from '../src/normalize.js';
+import { filterShows } from '../src/filter.js';
+import { sortShows } from '../src/sort.js';
+import { genreStats } from '../src/stats.js';
+import { createCounter, once, memoize } from '../src/closures.js';
+const input = Object.freeze({ id: 1, name: 'A', genres: ['Drama'], rating: { average: 0 }, premiered: '2020-01-01', summary: '<p>Hi</p>' });
+const shows = [{name:'B',year:2021,rating:0,genres:['Drama']},{name:'A',year:2020,rating:8,genres:['Comedy','Drama']}];
+test('C1: normalizes nullable TVmaze fields', () => { assert.deepEqual(normalizeShow(input).genres,['Drama']); assert.equal(normalizeShow(input).rating,0); assert.equal(normalizeShow(input).summary,'Hi'); assert.equal(normalizeShow(null).year,null); });
+test('C2: filters by query, genre, min rating', () => { assert.equal(filterShows(shows,{genre:'Drama'}).length,2); assert.deepEqual(filterShows(shows,{minRating:0}),shows); assert.equal(filterShows(shows,{query:'a'}).length,1); });
+test('C3: sorts without mutation', () => { const before = JSON.stringify(shows); assert.deepEqual(sortShows(shows,{by:'name'}).map(x=>x.name),['A','B']); assert.deepEqual(sortShows(shows,{by:'rating',direction:'desc'}).map(x=>x.rating),[8,0]); assert.equal(JSON.stringify(shows),before); });
+test('C4: genre statistics exclude missing ratings from average', () => { const s = genreStats(shows).find(x=>x.genre==='Drama'); assert.equal(s.count,2); assert.equal(s.averageRating,4); });
+test('C5: counter, once, memoize closures', () => { const c=createCounter(3); assert.equal(c(),4); assert.equal(c(),5); let calls=0; const f=once(()=>++calls); assert.equal(f(),1); assert.equal(f(),1); assert.equal(calls,1); const m=memoize(x=>{calls++;return x*2}); assert.equal(m(3),6); assert.equal(m(3),6); assert.equal(calls,2); });
